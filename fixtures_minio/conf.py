@@ -12,6 +12,7 @@ class FixturesMinioConf(AppConf):
     SECRET_KEY = 'fixtures'
     SECURE = False
 
+    PREFIX = ''
     BUCKET = 'fixtures'
 
     class Meta:

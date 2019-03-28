@@ -25,21 +25,27 @@ class Command(BaseCommand):
             'args', metavar='app_label[.ModelName]', nargs='*',
             help='Restricts dumped data to the specified app_label or app_label.ModelName.',
         )
+        parser.add_argument(
+            '--pks', dest='primary_keys',
+            help="Only dump objects with given primary keys. Accepts a comma-separated "
+                 "list of keys. This option only works when you specify one model.",
+        )
 
-    def get_fixture_file(self, dumpdata_args):
+    def get_fixture_file(self, dumpdata_args, dumpdata_options):
+        pks = dumpdata_options['primary_keys']
         fixture_file = NamedTemporaryFile(suffix='.json')
-        call_command('dumpdata', *dumpdata_args, output=fixture_file.name)
+        call_command('dumpdata', *dumpdata_args, output=fixture_file.name, pks=pks)
         fixture_file.seek(0)
         return fixture_file
 
     def get_file_name(self):
-        return 'fixture_{}.json'.format(
-            slugify(int(datetime.utcnow().timestamp()))
+        return '{}fixture_{}.json'.format(
+            slugify(settings.FM_MINIO_PREFIX, int(datetime.utcnow().timestamp()))
         )
 
     def handle(self, *args, **options):
         filename = self.get_file_name()
-        tmpfile = self.get_fixture_file(args)
+        tmpfile = self.get_fixture_file(args, options)
         try:
             CLIENT.fput_object(settings.FM_MINIO_BUCKET, filename, tmpfile.name)
         except ResponseError as err:
