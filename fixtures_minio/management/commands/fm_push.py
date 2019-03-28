@@ -30,6 +30,10 @@ class Command(BaseCommand):
             help="Only dump objects with given primary keys. Accepts a comma-separated "
                  "list of keys. This option only works when you specify one model.",
         )
+        parser.add_argument(
+            '--prefix', dest='manual_prefix',
+            help="Manual additional prefix for minio files ",
+        )
 
     def get_fixture_file(self, dumpdata_args, dumpdata_options):
         pks = dumpdata_options['primary_keys']
@@ -38,13 +42,15 @@ class Command(BaseCommand):
         fixture_file.seek(0)
         return fixture_file
 
-    def get_file_name(self):
-        return '{}fixture_{}.json'.format(
-            slugify(settings.FM_MINIO_PREFIX), slugify(int(datetime.utcnow().timestamp()))
+    def get_file_name(self, manual_prefix):
+        return '{}{}fixture_{}.json'.format(
+            slugify(manual_prefix), slugify(settings.FM_MINIO_PREFIX),
+            slugify(int(datetime.utcnow().timestamp()))
         )
 
     def handle(self, *args, **options):
-        filename = self.get_file_name()
+        manual_prefix = options[manual_prefix]
+        filename = self.get_file_name(manual_prefix=manual_prefix)
         tmpfile = self.get_fixture_file(args, options)
         try:
             CLIENT.fput_object(settings.FM_MINIO_BUCKET, filename, tmpfile.name)
