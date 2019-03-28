@@ -9,6 +9,7 @@ setup(
     license='BSD License',  # example license
     description='A simple Django app.',
     url='https://www.example.com/',
+    py_modules=['fixtures_minio'],
     author='SK',
     author_email='SK',
     classifiers=[

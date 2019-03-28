@@ -7,7 +7,7 @@ from django.conf import settings
 from minio import Minio
 
 class FixturesMinioConf(AppConf):
-    URL = 'minio-01.st.dc-1.xrt:9000'
+    URL = 'localhost:9000'
     ACCESS_KEY = 'fixtures'
     SECRET_KEY = 'fixtures'
     SECURE = False
