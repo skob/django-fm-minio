@@ -49,7 +49,7 @@ class Command(BaseCommand):
         )
 
     def handle(self, *args, **options):
-        manual_prefix = options[manual_prefix]
+        manual_prefix = options['manual_prefix']
         filename = self.get_file_name(manual_prefix=manual_prefix)
         tmpfile = self.get_fixture_file(args, options)
         try:
