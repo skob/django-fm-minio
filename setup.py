@@ -8,10 +8,10 @@ setup(
     include_package_data=True,
     license='BSD License',  # example license
     description='A simple Django app.',
-    url='https://www.example.com/',
+    url='https://github.com/skob/django-fm-minio',
     py_modules=['fixtures_minio'],
-    author='SK',
-    author_email='SK',
+    author='skob',
+    author_email='skobolo@gmail.com',
     classifiers=[
         'Environment :: Web Environment',
         'Framework :: Django',
