@@ -40,7 +40,7 @@ class Command(BaseCommand):
 
     def get_file_name(self):
         return '{}fixture_{}.json'.format(
-            slugify(settings.FM_MINIO_PREFIX, int(datetime.utcnow().timestamp()))
+            slugify(settings.FM_MINIO_PREFIX), slugify(int(datetime.utcnow().timestamp()))
         )
 
     def handle(self, *args, **options):
